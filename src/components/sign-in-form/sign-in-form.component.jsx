@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   signInWithGooglePopUp,
   createUserDocumentFromAuth,
@@ -7,7 +7,6 @@ import {
 
 import FormInput from "../form-input/form-input.component";
 import "./sign-in-form.styles.scss";
-
 import Button from "../button/button.component";
 
 const SignInForm = () => {
@@ -30,7 +29,6 @@ const SignInForm = () => {
         email,
         password
       );
-
       resetFormField();
     } catch (err) {
       switch (err.code) {
@@ -52,8 +50,7 @@ const SignInForm = () => {
   };
 
   const logWithGoogle = async () => {
-    const { user } = await signInWithGooglePopUp();
-    const userDocRef = await createUserDocumentFromAuth(user);
+    await signInWithGooglePopUp();
   };
 
   return (
