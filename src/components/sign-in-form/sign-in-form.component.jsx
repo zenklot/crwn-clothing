@@ -1,14 +1,16 @@
 import { useState } from "react";
-import {
-  signInWithGooglePopUp,
-  signInAuthUserWithEmailAndPassword,
-} from "../../utils/firebase/firebase.utils";
 
 import FormInput from "../form-input/form-input.component";
-import "./sign-in-form.styles.scss";
 import Button, { BUTTON_TYPE_CLASS } from "../button/button.component";
+import { useDispatch } from "react-redux";
+import {
+  googleSignInStart,
+  emailSignInStart,
+} from "../../store/user/user.action";
+import { SignInContainer, ButtonContainer } from "./sign-in-form.styles";
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   const defaultFormField = {
     email: "",
     password: "",
@@ -24,7 +26,7 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
       resetFormField();
     } catch (err) {
       switch (err.code) {
@@ -45,12 +47,12 @@ const SignInForm = () => {
     setFormField({ ...formField, [name]: value });
   };
 
-  const logWithGoogle = async () => {
-    await signInWithGooglePopUp();
+  const logWithGoogle = () => {
+    dispatch(googleSignInStart());
   };
 
   return (
-    <div className="sign-in-container">
+    <SignInContainer>
       <h2>Already have an account?</h2>
       <span>Sign in With Email & password</span>
       <form onSubmit={handleSubmit}>
@@ -72,7 +74,7 @@ const SignInForm = () => {
           value={password}
         />
 
-        <div className="buttons-container">
+        <ButtonContainer>
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
@@ -81,9 +83,9 @@ const SignInForm = () => {
           >
             Google Sign In
           </Button>
-        </div>
+        </ButtonContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
