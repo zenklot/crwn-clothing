@@ -9,7 +9,7 @@ import {
   NavLink,
 } from "./navigation.styles";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../store/user/user.selector";
+import { selectCurrentUser } from "../../store/user/user.selector.ts";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 import { useDispatch } from "react-redux";
 import { signOutStart } from "../../store/user/user.action";

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
+import { AuthErrorCodes, AuthError } from 'firebase/auth'
 
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASS } from "../button/button.component";
@@ -23,17 +24,17 @@ const SignInForm = () => {
     setFormField(defaultFormField);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event : FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       dispatch(emailSignInStart(email, password));
       resetFormField();
     } catch (err) {
-      switch (err.code) {
-        case "auth/wrong-password":
+      switch ((err as AuthError).code ) {
+        case AuthErrorCodes.INVALID_PASSWORD:
           alert("incorrect password");
           break;
-        case "auth/user-not-found":
+        case AuthErrorCodes.INVALID_EMAIL:
           alert("user not found");
           break;
         default:
@@ -42,7 +43,7 @@ const SignInForm = () => {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event : ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormField({ ...formField, [name]: value });
   };
